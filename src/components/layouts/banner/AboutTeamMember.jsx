@@ -22,7 +22,6 @@ const teamMembers = [
     { name: "អាន ដាលីន", role: "សមាជិក", image: daline },
     { name: "ណំ តុលា", role: "សមាជិក", image: tola },
 ];
-
 const AboutTeamMember = () => {
     return (
         <div className='py-10'>

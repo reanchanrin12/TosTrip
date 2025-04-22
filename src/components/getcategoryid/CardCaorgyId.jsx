@@ -4,7 +4,6 @@ import getData from '../../services/get/getData';
 const Places = () => {
   const [places, setPlaces] = useState([]);
   const [loading, setLoading] = useState(true);
-
   useEffect(() => {
     const fetchPlaces = async () => {
       try {
