@@ -4,7 +4,7 @@ const ProtectedAdmin = ({ children }) => {
   const token = localStorage.getItem('accessToken');
 
   if (!token) {
-    return <Navigate to="/login" />;
+    return <Navigate to="/auth/login" />;
   }
 
   return children;
