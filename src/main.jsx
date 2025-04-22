@@ -29,18 +29,20 @@ createRoot(document.getElementById("root")).render(
           <Route path="/place/:uuid" element={<PlaceDetailPage />} />
           <Route path="/about" element={<About />} />
           <Route path="/category/:uuid" element={<CategoryPage />} />
-
+          
 
         </Route>
         {/* login */}
         {/* <Route path="/login" element={<Login />} /> */}
-        <ProtectedAdmin>
-          <Route path="/admin" element={
+        <Route path="/admin" element={
+          <ProtectedAdmin>
             <Dashbard />
-          }
-          />
-          <Route path="/admin/place" element={<PlaceMangment />} />
-        </ProtectedAdmin>
+          </ProtectedAdmin>
+        }
+        />
+        <Route path="/admin/place" element={
+          <PlaceMangment />}
+        />
         <Route path="/admin/AppPlace" element={<AddPlaceForm />} />
         <Route path="/admin/AppPlace/:placeUuid" element={<EditPlaceForm />} />
 
@@ -48,7 +50,7 @@ createRoot(document.getElementById("root")).render(
         {/* auth */}
         <Route path="/auth/login" element={<Login />} />
         <Route path="/auth/register" element={<Register />} />
-        <Route path="/Login" element={<AdminLogin />} />
+        <Route path="/Login" element={<AdminLogin /> }/>
       </Routes>
     </BrowserRouter>
   </StrictMode>
