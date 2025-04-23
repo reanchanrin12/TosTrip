@@ -15,8 +15,6 @@ const Login = () => {
             className="w-full max-h-[500px] object-contain transition-transform duration-300"
           />
         </div>
-
-      
         <div className="w-full md:w-1/2 p-10 flex items-center justify-center bg-[#fff7f5]">
           <LoginForm />
         </div>

@@ -19,7 +19,7 @@ const Hero = () => {
           <Button color="#faa834" size="lg" className="bg-Primary text-white
                mt-10 px-6 py-3 rounded-lg flex  items-center justify-center  
              hover:bg-[#eb5a00] transition duration-300 ease-in-out cursor-pointer">
-              ដំំំណើរទេសចរណ៍
+              ដំណើរទេសចរណ៍
             <HiOutlineArrowRight className="ml-2 h-5  w-5​" />
           </Button>
         </Link>

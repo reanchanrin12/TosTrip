@@ -7,18 +7,18 @@ import { FaRegUserCircle } from "react-icons/fa";
 export function NavbarComponents() {
   const [isOpen, setIsOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [user, setUser] = useState(null); // Store user data
+  const [user, setUser] = useState(null); 
   const [error, setError] = useState(null);
 
-  // Check login status and fetch user data
+
   useEffect(() => {
     const checkLogin = async () => {
       const token = localStorage.getItem("accessToken");
       if (token) {
         setIsLoggedIn(true);
         try {
-          const userData = await fetchAllUsers(); // Fetch user data after login
-          setUser(userData); // Store user data in state
+          const userData = await fetchAllUsers(); 
+          setUser(userData); 
         } catch (err) {
           setError("Error fetching user data.");
           console.error(err);
@@ -55,7 +55,7 @@ export function NavbarComponents() {
       <nav className="max-w-screen-2xl mx-auto py-4 px-6 md:px-[7%] flex items-center justify-between">
         
         <NavLink to="/">
-          <img src={logo} alt="logo" className="h-16 object-cover" />
+          <img src={logo} alt="logo" className="h-16 object-cover " />
         </NavLink>
 
         
@@ -115,7 +115,7 @@ export function NavbarComponents() {
 
       
       <div
-        className={`md:hidden bg-white absolute w-full top-[60px] left-0 shadow-md transform transition-transform ${isOpen ? "block" : "hidden"
+        className={`mt-5 md:hidden bg-white absolute w-full top-[60px] left-0 shadow-md transform transition-transform ${isOpen ? "block" : "hidden"
           }`}
       >
         <div className="flex flex-col items-center space-y-4 py-5">
