@@ -11,7 +11,6 @@ const DeletePlace = ({ placeUuid }) => {
     setIsLoading(true);
     setError(null);
     setSuccess(false);
-
     try {
       const response = await fetch(
         `https://tostrip.eunglyzhia.social/api/v1/places/${placeUuid}`,
@@ -35,7 +34,6 @@ const DeletePlace = ({ placeUuid }) => {
       setIsLoading(false);
     }
   };
-
   return (
     <div className="flex flex-col items-center">
       {isLoading && <p className="text-sm text-gray-600">Deleting...</p>}
@@ -50,7 +48,6 @@ const DeletePlace = ({ placeUuid }) => {
           >
             លុប
           </button>
-
           {/* Modal */}
           {openModal && (
             <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">

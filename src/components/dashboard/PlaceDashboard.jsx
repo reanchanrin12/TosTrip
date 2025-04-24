@@ -3,6 +3,7 @@ import getData from "../../services/get/getData";
 import { Link } from "react-router"; 
 import DeletePlace from "./DeletePlace";
 import { FaMapMarkerAlt, FaList, FaClock } from "react-icons/fa";
+import { parseISO, differenceInDays } from "date-fns"; 
 
 const PlaceDashboard = () => {
   const [places, setPlaces] = useState([]);
@@ -12,6 +13,18 @@ const PlaceDashboard = () => {
   const [filteredPlaces, setFilteredPlaces] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [categories, setCategories] = useState([]);
+
+  // Reusable function to get recent places
+  const getPlacesAddedInLast30Days = (places) => {
+    const now = new Date();
+    return places.filter((place) => {
+      const createdAt =
+        typeof place.createdAt === "string"
+          ? parseISO(place.createdAt)
+          : new Date(place.createdAt);
+      return differenceInDays(now, createdAt) <= 30;
+    });
+  };
 
   const stats = [
     {
@@ -58,13 +71,7 @@ const PlaceDashboard = () => {
   }, []);
 
   useEffect(() => {
-    const thirtyDaysAgo = new Date();
-    thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
-
-    const recentPlaces = places.filter((place) => {
-      const placeCreatedAt = new Date(place.createdAt);
-      return placeCreatedAt >= thirtyDaysAgo;
-    });
+    const recentPlaces = getPlacesAddedInLast30Days(places);
     setFilteredPlaces(recentPlaces);
   }, [places]);
 
@@ -84,7 +91,7 @@ const PlaceDashboard = () => {
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center py-4">
+      <div className="flex justify-center items-center py-10">
         <div className="border-4 border-t-4 border-gray-200 border-t-blue-500 rounded-full w-16 h-16 animate-spin"></div>
       </div>
     );
@@ -98,10 +105,12 @@ const PlaceDashboard = () => {
     <div className="min-h-screen bg-gray-100 p-6 font-[Suwannaphum]">
       <h1 className="text-5xl font-bold mb-6 text-gray-800">ការគ្រប់គ្រងទីកន្លែង</h1>
 
-     
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-8">
         {stats.map((stat, i) => (
-          <div key={i} className="bg-white p-5 rounded-2xl shadow-md flex items-center gap-4">
+          <div
+            key={i}
+            className="bg-white p-5 rounded-2xl shadow-md flex items-center gap-4"
+          >
             <div className="p-3 bg-gray-100 rounded-full">{stat.icon}</div>
             <div>
               <p className="text-gray-500 text-sm">{stat.label}</p>
@@ -112,7 +121,6 @@ const PlaceDashboard = () => {
         ))}
       </div>
 
-      {/* Add Button */}
       <div className="flex justify-end my-10">
         <Link to="/admin/AppPlace">
           <div className="px-5 py-2 bg-blue-500 hover:bg-blue-600 rounded-md text-white cursor-pointer">
@@ -121,7 +129,6 @@ const PlaceDashboard = () => {
         </Link>
       </div>
 
-      {/* Filter/Search */}
       <div className="bg-white rounded-2xl shadow-md p-6 overflow-x-auto">
         <div className="flex flex-col sm:flex-row justify-end items-center gap-4 mb-4">
           <input
@@ -136,7 +143,7 @@ const PlaceDashboard = () => {
             value={selectedCategory}
             onChange={(e) => setSelectedCategory(e.target.value)}
           >
-            <option value="all">30ថ្ងៃចុងក្រោយ (ទាំងអស់)</option>
+            <option value="all">ទាំងអស់ (៣០ថ្ងៃចុងក្រោយ)</option>
             {categories.map((category, index) => (
               <option key={index} value={category}>
                 {category}
@@ -145,7 +152,6 @@ const PlaceDashboard = () => {
           </select>
         </div>
 
-        {/* Table */}
         <table className="w-full text-left border-collapse table-auto bg-white rounded-lg shadow-md overflow-hidden">
           <thead className="bg-gray-100 text-gray-700">
             <tr className="text-sm font-semibold">
@@ -157,36 +163,48 @@ const PlaceDashboard = () => {
             </tr>
           </thead>
           <tbody>
-            {limitedPlaces.map((place, idx) => (
-              <tr
-                key={idx}
-                className="border-b border-zinc last:border-none hover:bg-gray-50 transition-colors"
-              >
-                <td className="py-4 px-6 text-sm text-gray-800 font-medium">{place.name}</td>
-                <td className="px-6 text-sm text-gray-700">
-                  {place.description.length > 50
-                    ? place.description.substring(0, 50) + "..."
-                    : place.description}
-                </td>
-                <td className="px-6 text-sm text-gray-700">{place.category.name}</td>
-                <td className="px-6 h-14 w-24">
-                  <img
-                    src={place.imageUrls?.[0] || "/placeholder.png"}
-                    alt={place.name}
-                    className="w-full h-full object-cover rounded-md shadow-sm"
-                  />
-                </td>
-                <td className="px-6 py-4 text-sm text-center space-x-2 flex justify-center items-center">
-                  <Link
-                    className="px-4 py-2 bg-Primary cursor-pointer hover:bg-[#d4c186] text-white text-xs rounded-md transition-colors"
-                    to={`/admin/AppPlace/${place.uuid}`}
-                  >
-                    Edit
-                  </Link>
-                  <DeletePlace placeUuid={place.uuid} />
+            {limitedPlaces.length > 0 ? (
+              limitedPlaces.map((place, idx) => (
+                <tr
+                  key={idx}
+                  className="border-b border-zinc last:border-none hover:bg-gray-50 transition-colors"
+                >
+                  <td className="py-4 px-6 text-sm text-gray-800 font-medium">
+                    {place.name}
+                  </td>
+                  <td className="px-6 text-sm text-gray-700">
+                    {place.description.length > 50
+                      ? `${place.description.substring(0, 50)}...`
+                      : place.description}
+                  </td>
+                  <td className="px-6 text-sm text-gray-700">
+                    {place.category.name}
+                  </td>
+                  <td className="px-6 h-14 w-24">
+                    <img
+                      src={place.imageUrls?.[0] || "/placeholder.png"}
+                      alt={place.name || "Place"}
+                      className="w-full h-full object-cover rounded-md shadow-sm"
+                    />
+                  </td>
+                  <td className="px-6 py-4 text-sm text-center flex justify-center items-center space-x-2">
+                    <Link
+                      className="px-4 py-2 bg-Primary hover:bg-[#d4c186] text-white text-xs rounded-md transition-colors"
+                      to={`/admin/AppPlace/${place.uuid}`}
+                    >
+                      Edit
+                    </Link>
+                    <DeletePlace placeUuid={place.uuid} />
+                  </td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan="5" className="text-center py-6 text-gray-500">
+                  គ្មានទីកន្លែងដែលសមនឹងការស្វែងរក!
                 </td>
               </tr>
-            ))}
+            )}
           </tbody>
         </table>
       </div>
