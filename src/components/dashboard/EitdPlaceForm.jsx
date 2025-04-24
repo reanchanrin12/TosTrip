@@ -1,7 +1,10 @@
+
+
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
+import { Alert } from "flowbite-react";
 
 const validationSchema = Yup.object().shape({
   name: Yup.string().required("តម្រូវឲ្យបំពេញឈ្មោះ"),
@@ -20,6 +23,7 @@ const EditPlaceForm = () => {
   const [loading, setLoading] = useState(true);
   const [images, setImages] = useState([]);
   const [previewUrls, setPreviewUrls] = useState([]);
+  const [alert, setAlert] = useState({ show: false, type: "", message: "" });
 
   useEffect(() => {
     const fetchPlace = async () => {
@@ -54,7 +58,7 @@ const EditPlaceForm = () => {
   };
 
   const uploadImages = async () => {
-    if (images.length === 0) return previewUrls; 
+    if (images.length === 0) return previewUrls;
     try {
       const form = new FormData();
       images.forEach((img) => form.append("files", img));
@@ -66,7 +70,11 @@ const EditPlaceForm = () => {
       return data.map((e) => e.uri);
     } catch (err) {
       console.error("Image upload error:", err);
-      alert("Image upload failed.");
+      setAlert({
+        show: true,
+        type: "failure",
+        message: "ការផ្ទុករូបភាពបរាជ័យ។",
+      });
       return [];
     }
   };
@@ -90,23 +98,45 @@ const EditPlaceForm = () => {
 
       if (!response.ok) throw new Error("Failed to update");
 
-      alert("បានកែប្រែដោយជោគជ័យ!");
-      navigate("/admin/place");
+      setAlert({
+        show: true,
+        type: "success",
+        message: "បានកែប្រែដោយជោគជ័យ!",
+      });
+
+      setTimeout(() => navigate("/admin/place"), 1500);
     } catch (err) {
-      alert("បរាជ័យក្នុងការកែប្រែ");
       console.error(err);
+      setAlert({
+        show: true,
+        type: "failure",
+        message: "បរាជ័យក្នុងការកែប្រែ",
+      });
     }
   };
 
-  if (loading) return <div className="flex justify-center items-center h-screen ">
-    <div className="w-12 h-12 border-4 border-blue-500 border-t-transparent border-solid rounded-full animate-spin"></div>
-  </div>;
-  if (!initialValues) return <p className="text-center text-red-500">មិនអាចទាញយកទិន្នន័យបានទេ</p>;
+  if (loading) return (
+    <div className="flex justify-center items-center h-screen">
+      <div className="w-12 h-12 border-4 border-blue-500 border-t-transparent border-solid rounded-full animate-spin"></div>
+    </div>
+  );
+
+  if (!initialValues) return (
+    <p className="text-center text-red-500">មិនអាចទាញយកទិន្នន័យបានទេ</p>
+  );
+
   return (
     <div className="max-w-3xl mx-auto p-6 bg-white rounded-xl shadow-md font-[Suwannaphum] mt-10">
       <h2 className="text-2xl font-semibold mb-4 text-center">កែប្រែទីកន្លែង</h2>
+
+      {alert.show && (
+        <Alert color={alert.type === "success" ? "success" : "failure"} onDismiss={() => setAlert({ ...alert, show: false })}>
+          <span className="font-medium">{alert.type === "success" ? "ជោគជ័យ!" : "បរាជ័យ!"}</span> {alert.message}
+        </Alert>
+      )}
+
       <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={handleSubmit}>
-        {({ values }) => (
+        {() => (
           <Form className="space-y-4">
             <Field name="name" placeholder="ឈ្មោះទីកន្លែង" className="w-full p-3 border rounded-md" />
             <ErrorMessage name="name" component="div" className="text-red-500 text-sm" />
@@ -135,6 +165,7 @@ const EditPlaceForm = () => {
                 <ErrorMessage name="longitude" component="div" className="text-red-500 text-sm" />
               </div>
             </div>
+
             <Field as="select" name="categoryName" className="w-full p-3 border rounded-md bg-white">
               <option value="">ជ្រើសរើសប្រភេទ</option>
               <option value="តំបន់ប្រាសាទ">តំបន់ប្រាសាទ</option>

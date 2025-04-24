@@ -41,7 +41,7 @@ const DeletePlace = ({ placeUuid }) => {
       {isLoading && <p className="text-sm text-gray-600">Deleting...</p>}
       {error && <p className="text-sm text-red-600">{error}</p>}
       {success ? (
-        <p className="text-sm text-green-600">Place successfully deleted!</p>
+        <p className="text-sm text-green-600">deleted!</p>
       ) : (
         <>
           <button

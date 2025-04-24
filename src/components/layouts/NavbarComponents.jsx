@@ -112,8 +112,6 @@ export function NavbarComponents() {
           {isOpen ? <HiX /> : <HiMenu />}
         </button>
       </nav>
-
-      
       <div
         className={`mt-5 md:hidden bg-white absolute w-full top-[60px] left-0 shadow-md transform transition-transform ${isOpen ? "block" : "hidden"
           }`}

@@ -25,7 +25,7 @@ const Hero = () => {
         </Link>
       </div>
 
-      {/* Right Side Images */}
+    
       <div className="lg:w-1/2 flex flex-wrap justify-center items-center mt-10 lg:mt-0 gap-4">
         <img src={hero4} alt="Travel 3" className="rounded-[10px] shadow-md w-1/3 max-w-[140px] md:h-90 object-cover aspect-[9/16]" />
         <img src={hero2} alt="Travel 2" className="rounded-[10px] shadow-md w-1/3 max-w-[170px] md:h-110 object-cover aspect-[9/16]" />

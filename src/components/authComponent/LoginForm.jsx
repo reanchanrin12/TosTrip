@@ -84,7 +84,7 @@ const LoginForm = () => {
           <div className="text-Primary text-sm mt-1">{formik.errors.password}</div>
         )}
         
-        {/* ✅ Remember Me និង Forget password */}
+        
         <div className="flex justify-between items-center mt-2">
           <label className="text-sm flex items-center gap-1 text-Primary">
             <input
