@@ -18,7 +18,7 @@ const teamMembers = [
     { name: "ហេង ល័ងឈ័រ", role: "សមាជិក", image: hng },
     { name: "សាយ គីមឡុង", role: "សមាជិក", image: lang },
     { name: "តុង​​ ទីន", role: "សមាជិក", image: Ton },
-    { name: "ជិន​ ណារិន", role: "សមាជិក", image: vin },
+    { name: "ជិន​ ណាវីន", role: "សមាជិក", image: vin },
     { name: "អាន ដាលីន", role: "សមាជិក", image: daline },
     { name: "ណំ តុលា", role: "សមាជិក", image: tola },
 ];
